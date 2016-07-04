@@ -1,8 +1,9 @@
 ## WordPress+phpMyAdmin+Nginx+PHP-FPM(Apache)+vsftpd
 
 To run the playbook:
-Edit the `hosts` inventory file to include the names or URLs of the servers
+- Edit the `hosts` inventory file to include the names or URLs of the servers
 you want to deploy.
+- Set proper hostname in `group_vars/all` server_hostname: www.arturmihura.tk
 
 Run the playbook using:
 
