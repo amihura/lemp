@@ -1,6 +1,6 @@
 ---
-- name: Install vsftpd
-  yum: name=vsftpd state=present
+- name: Install proftpd
+  yum: name=proftpd state=present
 
 - name: Create user
   user:
@@ -13,11 +13,12 @@
 - name: Change permissions to session dir
   file:
     dest: /srv/wordpress/wp-content/uploads
-    owner: wp-user
-    group: wordpress
+    owner: wordpress
+    group: wp-user
+    mode: 0775
     recurse: true
-  notify: restart vsftpd
+  notify: restart proftpd
 
-- name: Copy vsftpd configuration for ftp
-  template: src=vsftpd.conf dest=/etc/vsftpd/vsftpd.conf
-  notify: restart vsftpd
+- name: Copy proftpd configuration for ftp
+  template: src=proftpd.conf dest=/etc/vsftpd/proftpd.conf
+  notify: restart proftpd

@@ -11,4 +11,4 @@
     - php-fpm
     - wordpress
     - pma
-    - vsftpd
+    - proftpd

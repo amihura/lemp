@@ -1,4 +1,4 @@
-## WordPress+phpMyAdmin+Nginx+PHP-FPM(Apache)+vsftpd
+## WordPress+phpMyAdmin+Nginx+PHP-FPM(Apache)+proftpd
 
 To run the playbook:
   - edit the `hosts` inventory file to include the names or URLs of the servers

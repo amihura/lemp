@@ -8,10 +8,6 @@
 - name: Create the GPG key for EPEL
   copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
 
-- name: Include loadin ftp iptables module
-  lineinfile: dest=/etc/sysconfig/iptables-config regexp="IPTABLES_MODULES=" line="IPTABLES_MODULES="nf_conntrack_ftp""
-  notify: restart iptables
-
 - name: Set up iptables rules
   copy: src=iptables-save dest=/etc/sysconfig/iptables
   notify: restart iptables
