@@ -7,12 +7,12 @@ you want to deploy.
 
 Run the playbook using:
 
-    ansible-playbook -i hosts site.yml
+    ansible-playbook -i hosts site.yml --ask-vault-pass
 
 
 If you want to use Apache instead of PHP-FPM run playbok:
 
-    ansible-playbook -i hosts site.yml --extra-vars "php_handler="apache"
+    ansible-playbook -i hosts site.yml --extra-vars "php_handler="apache" --ask-vault-pass
 
 By defaul this value is set to php_handler="php-fpm" in `group_vars/all`
 
