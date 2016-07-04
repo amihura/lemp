@@ -1,0 +1,25 @@
+---
+- name: Install Mysql package
+  yum: name={{ item }} state=present
+  with_items:
+   - mysql-server
+   - MySQL-python
+   - libselinux-python
+   - libsemanage-python
+
+- name: Start Mysql Service
+  service: name=mysqld state=started enabled=yes
+
+- name: Create Mysql configuration file
+  template: src=my.cnf.j2 dest=/etc/my.cnf
+
+# - ignore_errors is true because this task will always fail
+#on subsequent runs (as the root user password has been changed from "")
+- name: Set root password
+  mysql_user: name=root password={{ mysql_root_password }} host="{{item}}" priv=*.*:ALL,GRANT state=present
+  with_items:
+    - 127.0.0.1
+    - ::1
+    - localhost
+  ignore_errors: true
+  notify: restart mysql

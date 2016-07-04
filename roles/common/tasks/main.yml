@@ -1,0 +1,27 @@
+---
+- name: Install libselinux-python
+  yum: name=libselinux-python state=present
+
+- name: Copy the EPEL repository definition
+  copy: src=epel.repo dest=/etc/yum.repos.d/epel.repo
+
+- name: Create the GPG key for EPEL
+  copy: src=RPM-GPG-KEY-EPEL-6 dest=/etc/pki/rpm-gpg
+
+- name: Include loadin ftp iptables module
+  lineinfile: dest=/etc/sysconfig/iptables-config regexp="IPTABLES_MODULES=" line="IPTABLES_MODULES="nf_conntrack_ftp""
+  notify: restart iptables
+
+- name: Set up iptables rules
+  copy: src=iptables-save dest=/etc/sysconfig/iptables
+  notify: restart iptables
+
+- name: Copy the backup script
+  copy: src=db_backup.py dest=/tmp owner=root group=root mode=744
+
+- name: Creates daily db backup cronjob
+  cron: name="Backup mysql tables"
+        minute="0" hour="4" weekday="0-6"
+        cron_file="db_backup"
+        user="root"
+        job="/tmp/db_backup.py"

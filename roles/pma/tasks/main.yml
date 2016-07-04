@@ -1,0 +1,21 @@
+---
+- name: Ensure PHPMyAdmin is installed.
+  yum: name=phpmyadmin state=installed enablerepo=epel
+
+- name: Create symlink to /srv/wordpress dir
+  command: ln -s /usr/share/phpMyAdmin /srv/wordpress creates=/srv/wordpress/phpMyAdmin
+
+- name: Rename phpMyAdmin dir
+  command: mv /srv/wordpress/phpMyAdmin /srv/wordpress/phpmyadmin creates=/srv/wordpress/phpmyadmin removes=/srv/wordpress/phpMyAdmin
+
+- name: Remove httpd default phpMyAdmin conf
+  file: path=/etc/httpd/conf.d/phpMyAdmin.conf state=absent
+  notify: restart httpd
+
+- name: Change permissions to session dir
+  file:
+    dest: /var/lib/php/session
+    owner: wordpress
+    group: root
+    recurse: yes
+

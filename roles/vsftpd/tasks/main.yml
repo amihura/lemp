@@ -1,0 +1,23 @@
+---
+- name: Install vsftpd
+  yum: name=vsftpd state=present
+
+- name: Create user
+  user:
+    name=wp-user
+    shell=/sbin/nologin
+    home=/srv/wordpress/wp-content/uploads
+    password=$6$saltsalt$TVLlQcbpFVof5W3Yz4DTP6gRstiNuHwwTt6GLc1E5n0U0aDehy0S5knV8wiOQSpT0Y77vwPZN.Pq.H91p5hVO1
+    state=present
+
+- name: Change permissions to session dir
+  file:
+    dest: /srv/wordpress/wp-content/uploads
+    owner: wp-user
+    group: wordpress
+    recurse: true
+  notify: restart vsftpd
+
+- name: Copy vsftpd configuration for ftp
+  template: src=vsftpd.conf dest=/etc/vsftpd/vsftpd.conf
+  notify: restart vsftpd

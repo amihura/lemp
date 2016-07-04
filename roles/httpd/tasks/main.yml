@@ -1,0 +1,20 @@
+---
+- name: Install httpd and php
+  yum: name={{ item }} state=present
+  with_items:
+    - httpd
+    - php
+    - php-gd
+
+- name: Ensure httpd is started
+  service: name=httpd state=started enabled=yes
+
+- name: Copy nginx configuration for httpd wordpress and pma
+  template: src=default.conf dest=/etc/httpd/conf.d/default.conf
+
+- name: Include loading ftp iptables module
+  lineinfile: dest=/etc/httpd/conf/httpd.conf regexp="Listen 80" line="Listen 8080"
+  
+- name: Stop httpd if php-fpm enabled
+  service: name=httpd state=stopped
+  when: php_handler == "php-fpm"
