@@ -20,5 +20,5 @@
   notify: restart proftpd
 
 - name: Copy proftpd configuration for ftp
-  template: src=proftpd.conf dest=/etc/vsftpd/proftpd.conf
+  template: src=proftpd.conf dest=/etc/proftpd.conf
   notify: restart proftpd
